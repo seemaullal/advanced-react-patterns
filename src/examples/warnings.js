@@ -1,10 +1,10 @@
 // http://localhost:3000/isolated/examples/warnings.js
 
-import React from 'react'
+import React from 'react';
 
 function App() {
-  const [name, setName] = React.useState()
-  const [animal, setAnimal] = React.useState('tiger')
+  const [name, setName] = React.useState();
+  const [animal, setAnimal] = React.useState('tiger');
   return (
     <div>
       <div>
@@ -27,7 +27,7 @@ function App() {
         </label>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

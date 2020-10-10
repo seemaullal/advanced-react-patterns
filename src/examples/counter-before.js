@@ -1,38 +1,38 @@
 // http://localhost:3000/isolated/examples/counter-before.js
 
-import React from 'react'
+import React from 'react';
 
 // src/context/counter.js
-const CounterContext = React.createContext()
+const CounterContext = React.createContext();
 
 function CounterProvider({step = 1, initialCount = 0, ...props}) {
   const [state, dispatch] = React.useReducer(
     (state, action) => {
-      const change = action.step ?? step
+      const change = action.step ?? step;
       switch (action.type) {
         case 'increment': {
-          return {...state, count: state.count + change}
+          return {...state, count: state.count + change};
         }
         case 'decrement': {
-          return {...state, count: state.count - change}
+          return {...state, count: state.count - change};
         }
         default: {
-          throw new Error(`Unhandled action type: ${action.type}`)
+          throw new Error(`Unhandled action type: ${action.type}`);
         }
       }
     },
     {count: initialCount},
-  )
+  );
 
-  return <CounterContext.Provider value={[state, dispatch]} {...props} />
+  return <CounterContext.Provider value={[state, dispatch]} {...props} />;
 }
 
 function useCounter() {
-  const context = React.useContext(CounterContext)
+  const context = React.useContext(CounterContext);
   if (context === undefined) {
-    throw new Error(`useCounter must be used within a CounterProvider`)
+    throw new Error(`useCounter must be used within a CounterProvider`);
   }
-  return context
+  return context;
 }
 
 // export {CounterProvider, useCounter, increment, decrement}
@@ -41,16 +41,16 @@ function useCounter() {
 // import {useCounter, increment, decrement} from 'context/counter'
 
 function Counter() {
-  const [state, dispatch] = useCounter()
-  const increment = () => dispatch({type: 'increment'})
-  const decrement = () => dispatch({type: 'decrement'})
+  const [state, dispatch] = useCounter();
+  const increment = () => dispatch({type: 'increment'});
+  const decrement = () => dispatch({type: 'decrement'});
   return (
     <div>
       <div>Current Count: {state.count}</div>
       <button onClick={decrement}>-</button>
       <button onClick={increment}>+</button>
     </div>
-  )
+  );
 }
 
 // src/index.js
@@ -61,7 +61,7 @@ function App() {
     <CounterProvider>
       <Counter />
     </CounterProvider>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -2,32 +2,32 @@
 // 💯 prop getters
 // http://localhost:3000/isolated/final/04.extra-1.js
 
-import React from 'react'
-import {Switch} from '../switch'
+import React from 'react';
+import {Switch} from '../switch';
 
-const callAll = (...fns) => (...args) => fns.forEach(fn => fn?.(...args))
+const callAll = (...fns) => (...args) => fns.forEach(fn => fn?.(...args));
 
 function useToggle() {
-  const [on, setOn] = React.useState(false)
-  const toggle = () => setOn(!on)
+  const [on, setOn] = React.useState(false);
+  const toggle = () => setOn(!on);
 
   function getTogglerProps({onClick, ...props} = {}) {
     return {
       'aria-pressed': on,
       onClick: callAll(onClick, toggle),
       ...props,
-    }
+    };
   }
 
   return {
     on,
     toggle,
     getTogglerProps,
-  }
+  };
 }
 
 function App() {
-  const {on, getTogglerProps} = useToggle()
+  const {on, getTogglerProps} = useToggle();
   return (
     <div>
       <Switch {...getTogglerProps({on})} />
@@ -42,7 +42,7 @@ function App() {
         {on ? 'on' : 'off'}
       </button>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

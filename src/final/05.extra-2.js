@@ -2,51 +2,51 @@
 // 💯 state reducer action types
 // http://localhost:3000/isolated/final/05.extra-2.js
 
-import React from 'react'
-import {Switch} from '../switch'
+import React from 'react';
+import {Switch} from '../switch';
 
-const callAll = (...fns) => (...args) => fns.forEach(fn => fn?.(...args))
+const callAll = (...fns) => (...args) => fns.forEach(fn => fn?.(...args));
 
 const actionTypes = {
   toggle: 'toggle',
   reset: 'reset',
-}
+};
 
 function toggleReducer(state, {type, initialState}) {
   switch (type) {
     case actionTypes.toggle: {
-      return {on: !state.on}
+      return {on: !state.on};
     }
     case actionTypes.reset: {
-      return initialState
+      return initialState;
     }
     default: {
-      throw new Error(`Unsupported type: ${type}`)
+      throw new Error(`Unsupported type: ${type}`);
     }
   }
 }
 
 function useToggle({initialOn = false, reducer = toggleReducer} = {}) {
-  const {current: initialState} = React.useRef({on: initialOn})
-  const [state, dispatch] = React.useReducer(reducer, initialState)
-  const {on} = state
+  const {current: initialState} = React.useRef({on: initialOn});
+  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const {on} = state;
 
-  const toggle = () => dispatch({type: actionTypes.toggle})
-  const reset = () => dispatch({type: actionTypes.reset, initialState})
+  const toggle = () => dispatch({type: actionTypes.toggle});
+  const reset = () => dispatch({type: actionTypes.reset, initialState});
 
   function getTogglerProps({onClick, ...props} = {}) {
     return {
       'aria-pressed': on,
       onClick: callAll(onClick, toggle),
       ...props,
-    }
+    };
   }
 
   function getResetterProps({onClick, ...props} = {}) {
     return {
       onClick: callAll(onClick, reset),
       ...props,
-    }
+    };
   }
 
   return {
@@ -55,26 +55,26 @@ function useToggle({initialOn = false, reducer = toggleReducer} = {}) {
     toggle,
     getTogglerProps,
     getResetterProps,
-  }
+  };
 }
 // export {useToggle, toggleReducer, actionTypes}
 
 // import {useToggle, toggleReducer, actionTypes} from './use-toggle'
 
 function App() {
-  const [timesClicked, setTimesClicked] = React.useState(0)
-  const clickedTooMuch = timesClicked >= 4
+  const [timesClicked, setTimesClicked] = React.useState(0);
+  const clickedTooMuch = timesClicked >= 4;
 
   function toggleStateReducer(state, action) {
     if (action.type === actionTypes.toggle && clickedTooMuch) {
-      return {on: state.on}
+      return {on: state.on};
     }
-    return toggleReducer(state, action)
+    return toggleReducer(state, action);
   }
 
   const {on, getTogglerProps, getResetterProps} = useToggle({
     reducer: toggleStateReducer,
-  })
+  });
 
   return (
     <div>
@@ -97,7 +97,7 @@ function App() {
         Reset
       </button>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,26 +1,26 @@
 // Control Props
 // http://localhost:3000/isolated/final/06.js
 
-import React from 'react'
-import {Switch} from '../switch'
+import React from 'react';
+import {Switch} from '../switch';
 
-const callAll = (...fns) => (...args) => fns.forEach(fn => fn?.(...args))
+const callAll = (...fns) => (...args) => fns.forEach(fn => fn?.(...args));
 
 const actionTypes = {
   toggle: 'toggle',
   reset: 'reset',
-}
+};
 
 function toggleReducer(state, {type, initialState}) {
   switch (type) {
     case actionTypes.toggle: {
-      return {on: !state.on}
+      return {on: !state.on};
     }
     case actionTypes.reset: {
-      return initialState
+      return initialState;
     }
     default: {
-      throw new Error(`Unsupported type: ${type}`)
+      throw new Error(`Unsupported type: ${type}`);
     }
   }
 }
@@ -31,35 +31,35 @@ function useToggle({
   onChange,
   on: controlledOn,
 } = {}) {
-  const {current: initialState} = React.useRef({on: initialOn})
-  const [state, dispatch] = React.useReducer(reducer, initialState)
-  const onIsControlled = controlledOn != null
-  const on = onIsControlled ? controlledOn : state.on
+  const {current: initialState} = React.useRef({on: initialOn});
+  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const onIsControlled = controlledOn != null;
+  const on = onIsControlled ? controlledOn : state.on;
 
   function dispatchWithOnChange(action) {
     if (!onIsControlled) {
-      dispatch(action)
+      dispatch(action);
     }
-    onChange?.(reducer({...state, on}, action), action)
+    onChange?.(reducer({...state, on}, action), action);
   }
 
-  const toggle = () => dispatchWithOnChange({type: actionTypes.toggle})
+  const toggle = () => dispatchWithOnChange({type: actionTypes.toggle});
   const reset = () =>
-    dispatchWithOnChange({type: actionTypes.reset, initialState})
+    dispatchWithOnChange({type: actionTypes.reset, initialState});
 
   function getTogglerProps({onClick, ...props} = {}) {
     return {
       'aria-pressed': on,
       onClick: callAll(onClick, toggle),
       ...props,
-    }
+    };
   }
 
   function getResetterProps({onClick, ...props} = {}) {
     return {
       onClick: callAll(onClick, reset),
       ...props,
-    }
+    };
   }
 
   return {
@@ -68,30 +68,30 @@ function useToggle({
     toggle,
     getTogglerProps,
     getResetterProps,
-  }
+  };
 }
 
 function Toggle({on: controlledOn, onChange}) {
-  const {on, getTogglerProps} = useToggle({on: controlledOn, onChange})
-  const props = getTogglerProps({on})
-  return <Switch {...props} />
+  const {on, getTogglerProps} = useToggle({on: controlledOn, onChange});
+  const props = getTogglerProps({on});
+  return <Switch {...props} />;
 }
 
 function App() {
-  const [bothOn, setBothOn] = React.useState(false)
-  const [timesClicked, setTimesClicked] = React.useState(0)
+  const [bothOn, setBothOn] = React.useState(false);
+  const [timesClicked, setTimesClicked] = React.useState(0);
 
   function handleToggleChange(state, action) {
     if (action.type === actionTypes.toggle && timesClicked > 4) {
-      return
+      return;
     }
-    setBothOn(state.on)
-    setTimesClicked(c => c + 1)
+    setBothOn(state.on);
+    setTimesClicked(c => c + 1);
   }
 
   function handleResetClick() {
-    setBothOn(false)
-    setTimesClicked(0)
+    setBothOn(false);
+    setTimesClicked(0);
   }
 
   return (
@@ -119,12 +119,12 @@ function App() {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
 // we're adding the Toggle export for tests
-export {Toggle}
+export {Toggle};
 
 /*
 eslint
